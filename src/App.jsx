@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MyContext } from "./Context/Context";
 import back from "./../public/back.png";
 
 const App = () => {
+  const navigate = useNavigate();
   const { user } = useContext(MyContext);
   useEffect(() => {
     if (user) {
@@ -63,35 +64,36 @@ const App = () => {
         Explore a vast collection of quizzes on your favorite{" "}
         <span className="dif-font rounded bg-green-500 mt-2">subjects.</span>
       </p>
-      <p className="para mt-5 text-gray-400 lg:mx-20  md:text-md lg:text-xl">
+      <p className="para mt-5 text-gray-400 lg:mx-20  md:text-md lg:text-xl ">
         Discover your trivia expertise and compete against others in exciting
         quiz challenges. Challenge yourself, learn something new, and compete
         with friends in exciting trivia battles.
       </p>
-      <div className="mt-4">
-        <Link to={"/create"} >
-          <div className="bg-red-500 w-[100%] hover:bg-red-600  p-2 text-white font-medium rounded-md flex justify-center items-center gap-2 cursor-pointer">
-            <img
-              src="https://img.icons8.com/?size=100&id=62860&format=png&color=ffffff"
-              alt=""
-              className="h-5 cursor-pointer"
-            />
+      <div
+        className="bg-red-500  hover:bg-red-600  p-2 text-white font-medium rounded-md flex justify-center items-center gap-2 cursor-pointer z-[999] max-w-[250px] mt-5"
+        onClick={() => {
+          navigate("/create");
+        }}
+      >
+        <img
+          src="https://img.icons8.com/?size=100&id=62860&format=png&color=ffffff"
+          alt=""
+          className="h-5 cursor-pointer"
+        />
 
-            <p >Enter the world of quiz</p>
-          </div>
-        </Link>
-        <div className="">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-[150px] md:h-[120px] md:w-[200px]   md:mt-[-40px] rotate-[-60deg] md:rotate-[-40deg]"
-            viewBox="0 0 300 300"
-          >
-            <path
-              fill="#4e4f66"
-              d="M250.21 210.99a741.736 741.736 0 01-39.28-20.18c-2.91-1.6-5.56 1.89-4.26 4.17-1.44.09-2.71 1.05-2.5 2.91l.6 5.16a304.288 304.288 0 01-59.72-16.23 288.8 288.8 0 01-17.41-7.35c-5.05-2.33-10.18-4.65-14.74-7.85-2.02-1.42-4.11-3.12-5.79-5.11 8.34 2.04 17.05 2.33 25.53.36 5.46-1.27 11.49-3.41 15.19-7.84 3.57-4.29 3.89-9.98 1.46-14.9-6.24-12.6-21.54-11.22-32.58-6.76-8.6 3.47-18.3 9.78-19.17 19.31-8.21-3.88-15.63-9.56-21.45-16.2C59 120.98 54.35 93.51 54.41 68.4c0-3.94-6.12-3.95-6.12 0-.06 26.08 4.96 53.54 21.73 74.33 7.36 9.13 17.37 16.58 28.46 21.01 3.61 10.54 15.73 16.21 25.06 20.55 26.04 12.13 53.65 20.49 81.97 25.01.73 6.22 1.45 12.44 2.18 18.65.04.34.13.65.24.93-2.61 1.81-.99 6.68 2.44 5.5 13.82-4.79 27.16-10.83 39.85-18.1 1.87-1.07 2.11-4.28 0-5.29zm-146.52-51.81c-.44-4.46 2.22-8.35 5.74-11.05 4.23-3.25 9.53-5.42 14.62-6.87 5.3-1.51 11.79-2.16 16.4 1.51 3.44 2.74 5.95 7.85 3.06 11.86-2.9 4.02-8.79 5.55-13.37 6.53-8.87 1.9-17.96.96-26.45-1.97zm109.96 67.51l-1.92-16.46c2.38.33 4.77.64 7.16.92 3.91.45 3.88-5.67 0-6.12-2.63-.31-5.26-.66-7.89-1.03-.24-2.04-.47-4.07-.71-6.11-.02-.18-.06-.35-.1-.51a747.074 747.074 0 0031.82 16.44 225.3 225.3 0 01-28.36 12.87z"
-            ></path>
-          </svg>
-        </div>
+        <p className="cursor-pointer">Enter the world of quiz</p>
+      </div>
+      <div className="z-0">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-[150px] md:h-[120px] md:w-[200px]   md:mt-[-40px] rotate-[-60deg] md:rotate-[-40deg]"
+          viewBox="0 0 300 300"
+        >
+          <path
+            fill="#4e4f66"
+            d="M250.21 210.99a741.736 741.736 0 01-39.28-20.18c-2.91-1.6-5.56 1.89-4.26 4.17-1.44.09-2.71 1.05-2.5 2.91l.6 5.16a304.288 304.288 0 01-59.72-16.23 288.8 288.8 0 01-17.41-7.35c-5.05-2.33-10.18-4.65-14.74-7.85-2.02-1.42-4.11-3.12-5.79-5.11 8.34 2.04 17.05 2.33 25.53.36 5.46-1.27 11.49-3.41 15.19-7.84 3.57-4.29 3.89-9.98 1.46-14.9-6.24-12.6-21.54-11.22-32.58-6.76-8.6 3.47-18.3 9.78-19.17 19.31-8.21-3.88-15.63-9.56-21.45-16.2C59 120.98 54.35 93.51 54.41 68.4c0-3.94-6.12-3.95-6.12 0-.06 26.08 4.96 53.54 21.73 74.33 7.36 9.13 17.37 16.58 28.46 21.01 3.61 10.54 15.73 16.21 25.06 20.55 26.04 12.13 53.65 20.49 81.97 25.01.73 6.22 1.45 12.44 2.18 18.65.04.34.13.65.24.93-2.61 1.81-.99 6.68 2.44 5.5 13.82-4.79 27.16-10.83 39.85-18.1 1.87-1.07 2.11-4.28 0-5.29zm-146.52-51.81c-.44-4.46 2.22-8.35 5.74-11.05 4.23-3.25 9.53-5.42 14.62-6.87 5.3-1.51 11.79-2.16 16.4 1.51 3.44 2.74 5.95 7.85 3.06 11.86-2.9 4.02-8.79 5.55-13.37 6.53-8.87 1.9-17.96.96-26.45-1.97zm109.96 67.51l-1.92-16.46c2.38.33 4.77.64 7.16.92 3.91.45 3.88-5.67 0-6.12-2.63-.31-5.26-.66-7.89-1.03-.24-2.04-.47-4.07-.71-6.11-.02-.18-.06-.35-.1-.51a747.074 747.074 0 0031.82 16.44 225.3 225.3 0 01-28.36 12.87z"
+          ></path>
+        </svg>
       </div>
     </div>
   );

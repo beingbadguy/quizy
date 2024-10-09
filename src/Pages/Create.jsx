@@ -337,23 +337,24 @@ const Create = () => {
             <p>Specify the desired category for the questions</p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            {categories.map((item, index) => (
-              <div
-                key={item.id}
-                className={` ${
-                  quizCategory === item.category
-                    ? "bg-green-200 border-green-500"
-                    : ""
-                } border border-green-500 mt-2 p-6 cursor-pointer rounded flex flex-col justify-start items-start gap-1 shadow-sm hover:shadow-md  `}
-                onClick={() => {
-                  setQuizCategory(item.category);
-                }}
-              >
-                <img src={item.emoji} alt="" className="h-8" />
-                <p className="font-bold">{item.category}</p>
-                <p className="text-sm italic ">{item.title}</p>
-              </div>
-            ))}
+            {categories &&
+              categories.map((item, index) => (
+                <div
+                  key={item.id}
+                  className={` ${
+                    quizCategory === item.category
+                      ? "bg-green-200 border-green-500"
+                      : ""
+                  } border border-green-500 mt-2 p-6 cursor-pointer rounded flex flex-col justify-start items-start gap-1 shadow-sm hover:shadow-md  `}
+                  onClick={() => {
+                    setQuizCategory(item.category);
+                  }}
+                >
+                  <img src={item.emoji} alt="" className="h-8" />
+                  <p className="font-bold">{item.category}</p>
+                  <p className="text-sm italic ">{item.title}</p>
+                </div>
+              ))}
           </div>
         </div>
         <div className="mt-5">
@@ -366,21 +367,22 @@ const Create = () => {
             <p>Select a difficulty level</p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            {ChooseLevel.map((item, index) => (
-              <div
-                key={item.id}
-                className={` ${
-                  quizLevel === item.level ? "bg-red-200 border-red-500 " : ""
-                } border border-red-500 mt-2 p-6 cursor-pointer rounded flex flex-col justify-center items-start gap-1  `}
-                onClick={() => {
-                  setquizLevel(item.level);
-                }}
-              >
-                <img src={item.emoji} alt="" className="h-8" />
-                <p className="font-bold">{item.level}</p>
-                <p className="text-sm">{item.title}</p>
-              </div>
-            ))}
+            {ChooseLevel &&
+              ChooseLevel.map((item, index) => (
+                <div
+                  key={item.id}
+                  className={` ${
+                    quizLevel === item.level ? "bg-red-200 border-red-500 " : ""
+                  } border border-red-500 mt-2 p-6 cursor-pointer rounded flex flex-col justify-center items-start gap-1  `}
+                  onClick={() => {
+                    setquizLevel(item.level);
+                  }}
+                >
+                  <img src={item.emoji} alt="" className="h-8" />
+                  <p className="font-bold">{item.level}</p>
+                  <p className="text-sm">{item.title}</p>
+                </div>
+              ))}
           </div>
         </div>
         <div className="w-full relative mt-4">
