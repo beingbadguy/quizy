@@ -227,7 +227,7 @@ const Profile = () => {
                 thisUserTest?.map((test) => (
                   <div
                     key={test.id}
-                    className="border border-green-400 shadow-sm hover:shadow-lg rounded p-2 cursor-pointer "
+                    className="border border-green-400 shadow-sm hover:shadow-lg rounded p-4 cursor-pointer flex flex-col gap-2 "
                   >
                     <p className="font-bold text-green-500">
                       Quiz ID: {test.quiz_id}
