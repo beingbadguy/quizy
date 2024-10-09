@@ -125,24 +125,29 @@ const Overview = () => {
         />
         Timer: {counter}
       </div>
-      <div className=" pb-10 mt-20 flex items-center lg:items-center justify-center  gap-20 lg:mx-20 flex-col lg:flex-row ">
-        <div className="lg:w-[50%] p-4 ">
-          <p className="font-bold">Questions</p>
-          <div className="grid grid-cols-5 mt-10 gap-4  ">
+      <div className=" pb-10 md:mt-10 flex items-center md:items-start justify-center  lg:gap-10 md:mx-10 lg:mx-20 flex-col md:flex-row ">
+        <div className="md:w-[60%] lg:w-[40%] p-4 ">
+          <div className="font-bold  flex items-center gap-1">
+            <img
+              src="https://img.icons8.com/?size=100&id=t2kJDqV3R8DP&format=png&color=000000"
+              alt=""
+              className="h-5"
+            />
+            <p>Questions</p>
+          </div>
+          <div className="grid grid-cols-8 sm:grid-cols-10 md:grid-cols-6 mt-4 gap-2 md:gap-4 text-sm  ">
             {Array(questionsLength[0])
               .fill(0)
               .map((_, i) => (
                 <div
                   key={i}
                   className={` ${
-                    showQuiz === i + 1
-                      ? "bg-[#F0A8D0] text-white font-bold"
-                      : ""
+                    showQuiz === i + 1 ? "bg-sky-100 text-black font-bold" : ""
                   } ${
                     answers[i]?.length > 0
                       ? "bg-green-500 text-white font-bold"
                       : ""
-                  }  border p-4 cursor-pointer  hover:text-black flex items-center justify-center rounded-full border-gray-300 `}
+                  }  border p-2 cursor-pointer  hover:text-black flex items-center justify-center rounded-full border-gray-300 `}
                   onClick={() => {
                     setShowQuiz(i + 1);
                   }}
@@ -153,17 +158,51 @@ const Overview = () => {
           </div>
         </div>
 
-        <div className="p-5 font-bold w-[100%] lg:w-[50%]  ">
+        <div className=" p-5 font-bold w-full md:w-[100%] lg:w-[60%]  ">
           {filtered?.map((item, index) => (
             <div key={index}>
-              <p>{item.title}</p>
-              <div className="">
+              <div className="flex items-center gap-1">
+                <img
+                  src="https://img.icons8.com/?size=100&id=35881&format=png&color=000000"
+                  alt=""
+                  className="h-5"
+                />
+                <p>{item.title}</p>
+              </div>
+
+              <div className="relative">
+                <div className="flex items-center gap-4 absolute right-3 top-3 ">
+                  <img
+                    src="https://img.icons8.com/?size=100&id=40075&format=png&color=000000"
+                    alt=""
+                    className={` ${
+                      showQuiz != 1 ? "" : "hidden"
+                    } h-8 cursor-pointer`}
+                    onClick={() => {
+                      if (showQuiz != 1) {
+                        setShowQuiz(showQuiz - 1);
+                      }
+                    }}
+                  />
+                  <img
+                    src="https://img.icons8.com/?size=100&id=40074&format=png&color=000000"
+                    alt=""
+                    className={` ${
+                      showQuiz != questionsLength[0] ? "" : "hidden"
+                    } h-8 cursor-pointer`}
+                    onClick={() => {
+                      if (showQuiz != questionsLength[0]) {
+                        setShowQuiz(showQuiz + 1);
+                      }
+                    }}
+                  />
+                </div>
                 {item?.questions.map((q, i) => (
                   <div
                     key={i}
                     className={` ${
                       showQuiz === i + 1 ? "" : "hidden"
-                    } shadow-md   bg-sky-50 mt-8 p-8`}
+                    } shadow-md   bg-sky-50 mt-3 p-8`}
                   >
                     <div className="">
                       <p className="text-neutral-500">
@@ -177,7 +216,7 @@ const Overview = () => {
                           key={index}
                           className={`${
                             answers[i] === a ? "bg-green-300" : ""
-                          } mt-2 p-2 min-w-[40%] max-w-[60%] px-10 flex justify-between items-center hover:shadow-md hover:border-purple-300 hover:border border border-gray-300 rounded cursor-pointer`}
+                          } mt-2 p-2 min-w-[70%] max-w-[60%] px-4 flex justify-between gap-5 items-center hover:shadow-md hover:border-green-500 hover:border border border-purple-600 rounded cursor-pointer `}
                           onClick={() => {
                             const handleAnswerChange = (
                               questionNumber,

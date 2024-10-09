@@ -5,12 +5,15 @@
   /* font-family: "Switzer", sans-serif; */
   font-family: "Synonym", sans-serif;
   /* font-family: "Bonny", serif; */
+  user-select: none;
 }
 .dif-font {
   font-family: "Satoshi", sans-serif;
 }
-.para{
+.para {
   /* font-family: "Satoshi", sans-serif; */
   font-family: "Supreme", sans-serif;
-
+}
+.question {
+  font-family: "Supreme", sans-serif;
 }

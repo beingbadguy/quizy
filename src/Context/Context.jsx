@@ -8,6 +8,8 @@ export const MyContext = createContext();
 const MainContext = ({ children }) => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
+  const [dp, setDp] = useState(user?.profile_picture);
+
   const [myAnswers, setMyAnswers] = useState();
   const [actualAnswers, setActualAnswers] = useState();
   const [recentQuestions, setRecentQuestions] = useState();
@@ -49,6 +51,8 @@ const MainContext = ({ children }) => {
         setScore,
         recentQuestions,
         setRecentQuestions,
+        dp,
+        setDp,
       }}
     >
       {children}

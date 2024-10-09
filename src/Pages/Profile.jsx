@@ -1,12 +1,42 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MyContext } from "../Context/Context";
+import { db, storage } from "../config/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const Profile = () => {
-  const { user, logout } = useContext(MyContext);
+  const { user, logout, dp, setDp } = useContext(MyContext);
+  // console.log(user.profile_picture);
   const navigate = useNavigate();
-  const [file, setFile] = useState();
-  console.log(file);
+  const [selectedFile, setSelectedFile] = useState();
+  // console.log(dp);
+
+  const uploadImage = async (file) => {
+    if (!file) {
+      return console.log("You have no file to upload");
+    }
+    // console.log(file?.name);
+    const storageRef = ref(storage, `images/${file?.name}`);
+
+    try {
+      const snapshot = await uploadBytes(storageRef, file);
+
+      const downloadURL = await getDownloadURL(snapshot.ref);
+      // console.log(downloadURL);
+
+      const docRef = doc(db, "users", user.user_id);
+      await updateDoc(docRef, {
+        profile_picture: downloadURL,
+      });
+      setDp(downloadURL);
+      // window.location.reload();
+    } catch (error) {
+      console.error("Upload failed", error);
+      throw error;
+    }
+  };
+  useEffect(() => {}, [dp, setDp]);
 
   return (
     <div className="min-h-[85vh] m-4">
@@ -21,17 +51,21 @@ const Profile = () => {
         />
         <p className="">Account</p>
       </div>
-      <div className="mx-48">
+      <div className="mt-4 lg:mx-48">
         <div className="flex items-center justify-between  ">
-          <div className="flex justify-center items-center gap-1">
+          <div className="flex justify-center items-center gap-2">
             <img
-              src="https://img.icons8.com/?size=100&id=7819&format=png&color=000000"
+              src={
+                user && dp
+                  ? dp
+                  : "https://img.icons8.com/?size=100&id=7819&format=png&color=000000"
+              }
               alt=""
-              className="h-16"
+              className="h-16 w-16 object-cover rounded-full"
             />
             <div>
               <div className="flex items-center ">
-                <p className="uppercase font-bold text-xl">{user?.name}</p>
+                <p className="uppercase font-bold text-xl ">{user?.name}</p>
                 {/* <img
                 src="https://img.icons8.com/?size=100&id=D9RtvkuOe31p&format=png&color=000000"
                 alt=""
@@ -65,7 +99,10 @@ const Profile = () => {
                 accept="image/*"
                 className="absolute overflow-hidden opacity-0"
                 onChange={async (e) => {
-                  setFile(e.target.files[0]);
+                  const file = e.target.files[0];
+                  setSelectedFile(file);
+                  uploadImage(file);
+                  // uploadImage(selectedFile);
                 }}
               />
               <p>Edit</p>
@@ -96,9 +133,12 @@ const Profile = () => {
               className="h-5"
             />
             <p className="font-bold w-[140px]">Points</p>
+            <div>
             <p>{user?.points}</p>
+              <p>{user?.quiz_created?.length}</p>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
+          {/* <div className="flex items-center gap-2">
             <img
               src="https://img.icons8.com/?size=100&id=7819&format=png&color=000000"
               alt=""
@@ -106,7 +146,7 @@ const Profile = () => {
             />
             <p className="font-bold w-[140px]">User ID</p>
             <p>{user?.user_id}</p>
-          </div>
+          </div> */}
           <div className="flex items-center gap-2">
             <img
               src="https://img.icons8.com/?size=100&id=123387&format=png&color=000000"

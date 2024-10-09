@@ -18,10 +18,28 @@ const Final = () => {
 
   return (
     <div className="min-h-[85vh] flex flex-col items-center justify-start mt-10 mb-10">
-      <p className="font-bold">
+      <div className="flex items-center gap-2 absolute left-10 ">
+        <img
+          src="https://img.icons8.com/?size=100&id=89346&format=png&color=000000"
+          alt=""
+          className="h-6 cursor-pointer"
+          onClick={() => {
+            navigate("/");
+          }}
+        />
+        <p className="">Score</p>
+      </div>
+      <div>
+        <img
+          src="https://img.icons8.com/?size=100&id=K7UWQpIZgEo1&format=png&color=000000"
+          alt=""
+          className="h-8"
+        />
+      </div>
+      <p className="font-bold mt-2">
         You Have Scored {score} out of {actualAnswers?.length * 5}
       </p>
-      <div className="mt-10 w-full sm:w-[80%] md:w-[70%] lg:w-[50%] p-4 flex flex-col gap-5">
+      <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 w-full sm:w-[90%] md:w-[90%] lg:w-[100%] p-4  gap-5">
         {actualAnswers &&
           actualAnswers?.map((item, index) => (
             <div
@@ -59,14 +77,34 @@ const Final = () => {
             </div>
           ))}
       </div>
-      <p
-        className="bg-green-500 p-2 text-white rounded font-bold cursor-pointer"
-        onClick={() => {
-          navigate("/create");
-        }}
-      >
-        Start Another Quiz
-      </p>
+      <div className="flex justify-between flex-col md:flex-row gap-6 mt-6">
+        <div
+          className="bg-black p-2 md:text-md text-white rounded font-bold cursor-pointer w-[200px] flex items-center justify-center gap-2"
+          onClick={() => {
+            navigate("/create");
+          }}
+        >
+          <img
+            src="https://img.icons8.com/?size=100&id=79627&format=png&color=ffffff"
+            alt=""
+            className="h-6"
+          />
+          <p> Start Another Quiz</p>
+        </div>
+        <p
+          className="bg-black p-2 md:text-md text-white rounded font-bold cursor-pointer w-[200px] flex items-center justify-center gap-2"
+          onClick={() => {
+            navigate("/profile");
+          }}
+        >
+          <img
+            src="https://img.icons8.com/?size=100&id=100243&format=png&color=ffffff"
+            alt=""
+            className="h-6"
+          />
+          <p>Go To Profile</p>
+        </p>
+      </div>
     </div>
   );
 };

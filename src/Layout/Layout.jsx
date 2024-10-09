@@ -5,7 +5,7 @@ import logo from "../../public/logo.svg";
 import ClipLoader from "react-spinners/ClipLoader";
 
 const Layout = () => {
-  const { logout, user } = useContext(MyContext);
+  const { logout, user, dp, setDp } = useContext(MyContext);
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -29,19 +29,16 @@ const Layout = () => {
           <img src={logo} alt="" />
           <p className="text-2xl font-bold text-[#343131]">uizy</p>
         </div>
-        <div className="border   rounded flex justify-center items-center gap-2 bg-red-50">
-          <img
-            src="https://img.icons8.com/?size=100&id=iiUA4lmXQNnG&format=png&color=000000"
-            alt=""
-            className="h-6"
-          />
-          Under Development
-        </div>
+
         <div className="cursor-pointer">
           <img
-            src="https://img.icons8.com/?size=100&id=7819&format=png&color=000000"
+            src={
+              user && dp
+                ? dp
+                : "https://img.icons8.com/?size=100&id=7819&format=png&color=000000"
+            }
             alt=""
-            className="h-8"
+            className="h-8 w-8 object-cover rounded-full"
             onClick={() => {
               if (user) {
                 navigate("/profile");
@@ -62,8 +59,12 @@ const Layout = () => {
         <Outlet />
       )}
       <hr />
-      <p className="p-4 bg-white text-center text-black font-bold">
-        Made by Aman @2024
+      <p
+        className={`${
+          loading ? "hidden" : ""
+        } p-4 bg-white text-center text-black font-bold flex flex-col`}
+      >
+        Made by Amann @2024
       </p>
     </div>
   );

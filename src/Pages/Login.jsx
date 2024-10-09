@@ -68,7 +68,7 @@ const Login = () => {
         <p className="text-2xl font-bold text-[#343131]">uizy</p>
       </div>
       <p className="my-2">Hi, Welcome Back </p>
-      <form className="flex flex-col gap-3 w-[40%]">
+      <form className="flex flex-col gap-3 w-[80%] sm:w-[70%] md:w-[60%] lg:w-[40%]">
         <label htmlFor="" className="flex flex-col gap-1">
           Email
           <input
