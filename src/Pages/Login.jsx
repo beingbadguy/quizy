@@ -49,15 +49,17 @@ const Login = () => {
         window.location.reload();
       } catch (error) {
         console.log(error.message);
-        setError(error.message);
-        setLoading(false);
+        if (error) {
+          setError("Invlid credentials");
+          setLoading(false);
+        }
       }
     }
   };
 
   useEffect(() => {
     if (user) {
-      navigate("/");
+      navigate("/create");
     }
   }, [user, setUser]);
 

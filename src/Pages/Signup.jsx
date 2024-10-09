@@ -58,7 +58,7 @@ const Signup = () => {
   };
   useEffect(() => {
     if (user) {
-      navigate("/");
+      navigate("/create");
     }
   }, []);
 

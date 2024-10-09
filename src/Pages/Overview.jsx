@@ -2,13 +2,15 @@ import React, { useContext, useEffect, useState } from "react";
 import { MyContext } from "../Context/Context";
 import { useNavigate, useParams } from "react-router-dom";
 import { db } from "../config/firebase";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { addDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { Watch } from "react-loader-spinner";
+import { format } from "date-fns";
 
 const Overview = () => {
   const {
     user,
     setMyAnswers,
+    actualAnswers,
     setActualAnswers,
     score,
     setScore,
@@ -16,9 +18,15 @@ const Overview = () => {
     setRecentQuestions,
     setUser,
   } = useContext(MyContext);
-  const { id } = useParams();
-  const [userQuiz, setUserQuiz] = useState([]);
 
+  const [userQuiz, setUserQuiz] = useState([]);
+  const [answerArray, setAnswersArray] = useState([]);
+  const [showQuiz, setShowQuiz] = useState(1);
+  const [answers, setAnswers] = useState([]);
+  const [modifiedAnswers, setModifiedAnswers] = useState([]);
+  const [counter, setCounter] = useState(120);
+
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const fetchQuizById = async (id) => {
@@ -36,8 +44,6 @@ const Overview = () => {
   const filtered = userQuiz.filter((item) => {
     return item.quiz_id == id;
   });
-
-  const [answerArray, setAnswersArray] = useState([]);
 
   const questionsLength = filtered.map((q, i) => {
     return q.questions.length;
@@ -60,21 +66,37 @@ const Overview = () => {
       return questions;
     });
     setRecentQuestions(actualquestions[0]);
+    // console.log("it is rendering");
   }, [userQuiz]);
 
   useEffect(() => {
     fetchQuizById(id);
-  }, []);
+    // console.log("it is rendering");
+  }, [id]);
 
-  const [showQuiz, setShowQuiz] = useState(1);
+  let newArray = [];
 
-  const [answers, setAnswers] = useState([]);
+  useEffect(() => {
+    const modArray = [...newArray]; // Create a copy of newArray to modify
+    const len = questionsLength[0]; // Assuming questionsLength is correctly populated
 
-  useEffect(() => {}, [answers]);
+    for (let i = 0; i < len; i++) {
+      if (answers[i] === undefined || answers[i] === null) {
+        modArray[i] = "empty"; // Set "empty" for undefined/null values
+      } else {
+        modArray[i] = answers[i]; // Set the actual answer
+      }
+    }
+
+    setModifiedAnswers(modArray); // Update the modifiedAnswers state
+  }, [answers]);
+  // console.log(modifiedAnswers);
 
   const compareArrays = async (array1, array2) => {
     if (answers.length === 0) {
-      return alert("Atleast one answer");
+      alert("Atleast one answer");
+      setCounter(120);
+      return;
     }
     let points = 0;
 
@@ -92,23 +114,61 @@ const Overview = () => {
         points: docSnap.data().points + points,
       });
     }
+    finalSubmission(points);
 
     setUser({ ...user, points: user.points + points });
 
-    navigate("/final");
+    navigate(`/final/${id}`);
   };
-  // console.log();
-  const [counter, setCounter] = useState(60 * 2);
 
   useEffect(() => {
     const subscribe = setInterval(() => {
-      if (counter == 0) {
+      if (counter === 0) {
         compareArrays(answers, answerArray);
+        return;
       }
       setCounter(counter - 1);
     }, 1000);
     return () => clearInterval(subscribe);
-  }, [counter]);
+  }, []);
+
+  useEffect(() => {
+    // console.log(answers);
+  }, [answers]);
+
+  const finalSubmission = async (points) => {
+    // Get the current date and time
+    const now = new Date();
+
+    // Format the date and time
+    const formattedDate = format(now, "ddMMyy HH:mm:ss");
+
+    // console.log(formattedDate);
+
+    if (
+      !user?.user_id ||
+      !Array.isArray(modifiedAnswers) ||
+      modifiedAnswers.length === 0
+    ) {
+      console.error("Invalid data: Ensure user_id and answers are present.");
+      return;
+    }
+    try {
+      await setDoc(doc(db, "attempted_quiz", id), {
+        user_id: user?.user_id,
+        quiz_id: id,
+        score: points,
+        myAnswer: modifiedAnswers,
+        actualAnswers: actualAnswers,
+        timestamp: formattedDate,
+        topic: filtered[0]?.title,
+        timeTaken: 120 - counter,
+        questions: recentQuestions,
+      });
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
 
   return (
     <div className="min-h-[85vh] flex  flex-col  ">

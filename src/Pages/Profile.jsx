@@ -3,7 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { MyContext } from "../Context/Context";
 import { db, storage } from "../config/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  QuerySnapshot,
+  updateDoc,
+} from "firebase/firestore";
 
 const Profile = () => {
   const { user, logout, dp, setDp } = useContext(MyContext);
@@ -37,9 +44,50 @@ const Profile = () => {
     }
   };
   useEffect(() => {}, [dp, setDp]);
+  const [allTest, setAllTest] = useState();
+  const [thisUserTest, setThisUserTest] = useState();
+
+  const fetchQuizById = async () => {
+    try {
+      const ref = collection(db, "attempted_quiz");
+      const docSnap = await getDocs(ref);
+
+      const documents = docSnap.docs.map((doc) => ({
+        id: doc.id, // Get the document ID
+        ...doc.data(), // Spread the document data
+      }));
+
+      // console.log(documents);
+      setAllTest(documents);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  useEffect(() => {
+    fetchQuizById();
+  }, []);
+
+  const filterById = allTest?.filter((test) => {
+    return test.user_id === user.user_id;
+  });
+  // console.log(filterById);
+
+  useEffect(() => {
+    setThisUserTest(filterById);
+  }, [allTest]);
+
+  // const timeArray = "091024 23:27:15".split(" ");
+  // const date = timeArray[0];
+  // const time = timeArray[1];
+  // console.log(date.slice(0, 2));
+  // console.log(date.slice(2, 4));
+  // console.log(date.slice(4, 6));
+
+  // console.log(date);
+  // console.log(time);
 
   return (
-    <div className="min-h-[85vh] m-4">
+    <div className="min-h-[85vh] m-4 mb-10">
       <div className="flex items-center gap-2">
         <img
           src="https://img.icons8.com/?size=100&id=89346&format=png&color=000000"
@@ -164,9 +212,51 @@ const Profile = () => {
           </div>
         </div>
         <hr className="my-4 border-1 border-gray-300" />
-        <div className="flex justify-between items-center">
-          <div>created quiz will be shown here</div>
-          <div>Calendar with days online will be shown here</div>
+        <div className="flex justify-start items-start flex-col md:justify-between md:flex-row">
+          <div>
+            <div className="font-bold flex gap-2">
+              <img
+                src="https://img.icons8.com/?size=100&id=16790&format=png&color=000000"
+                alt=""
+                className="h-6"
+              />
+              Attempted Quizzes
+            </div>
+            <div className="mt-4 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+              {(thisUserTest &&
+                thisUserTest?.map((test) => (
+                  <div
+                    key={test.id}
+                    className="border border-green-400 shadow-sm hover:shadow-lg rounded p-2 cursor-pointer "
+                  >
+                    <p className="font-bold text-green-500">
+                      Quiz ID: {test.quiz_id}
+                    </p>
+                    <p className="font-bold">
+                      Time Taken : {test.timeTaken} Seconds
+                    </p>
+                    <p className="font-bold">Topic: {test.topic}</p>
+                    <p className="font-bold">Score: {test.score}</p>
+                    <p className="italic">
+                      Date: {test.timestamp.split(" ")[0].slice(0, 2)}/
+                      {test.timestamp.split(" ")[0].slice(2, 4)}/
+                      {test.timestamp.split(" ")[0].slice(4, 6)}
+                    </p>
+                    <p className="italic">
+                      Time: {test.timestamp.split(" ")[1]}
+                    </p>
+                    <p
+                      className="bg-green-500 p-1 flex items-center justify-center rounded mt-2 text-white font-bold"
+                      onClick={() => {
+                        navigate(`/final/${test.quiz_id}`);
+                      }}
+                    >
+                      View
+                    </p>
+                  </div>
+                ))) || <p>No attempted quizzes yet</p>}
+            </div>
+          </div>
         </div>
       </div>
     </div>
