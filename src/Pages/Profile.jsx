@@ -133,10 +133,7 @@ const Profile = () => {
               className="h-5"
             />
             <p className="font-bold w-[140px]">Points</p>
-            <div>
             <p>{user?.points}</p>
-              <p>{user?.quiz_created?.length}</p>
-            </div>
           </div>
           {/* <div className="flex items-center gap-2">
             <img
