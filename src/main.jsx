@@ -11,6 +11,7 @@ import MainContext from "./Context/Context.jsx";
 import Overview from "./Pages/Overview.jsx";
 import Profile from "./Pages/Profile.jsx";
 import Final from "./Pages/Final.jsx";
+import Error from "./Pages/Error.jsx";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: "final/:id",
         element: <Final />,
+      },
+      {
+        path: "*",
+        element: <Error/>,
       },
     ],
   },

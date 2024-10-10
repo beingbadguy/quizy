@@ -2,7 +2,15 @@ import React, { useContext, useEffect, useState } from "react";
 import { MyContext } from "../Context/Context";
 import { useNavigate, useParams } from "react-router-dom";
 import { db } from "../config/firebase";
-import { addDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { Watch } from "react-loader-spinner";
 import { format } from "date-fns";
 
@@ -130,7 +138,7 @@ const Overview = () => {
       setCounter(counter - 1);
     }, 1000);
     return () => clearInterval(subscribe);
-  }, []);
+  }, [counter]);
 
   useEffect(() => {
     // console.log(answers);
@@ -169,6 +177,27 @@ const Overview = () => {
       console.log(err.message);
     }
   };
+
+  useEffect(() => {
+    const hasALreadyGivenQuiz = async (id) => {
+      try {
+        const ref = doc(db, "attempted_quiz", id);
+
+        const docSnap = await getDoc(ref);
+        if (docSnap.exists()) {
+          return true;
+        } else {
+          return false;
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    if (hasALreadyGivenQuiz(id)) {
+      alert("You have already given this quiz, please create a new one");
+      navigate("/create");
+    }
+  }, []);
 
   return (
     <div className="min-h-[85vh] flex  flex-col  ">
