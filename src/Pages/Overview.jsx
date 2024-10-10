@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { MyContext } from "../Context/Context";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { db } from "../config/firebase";
 import {
   addDoc,
@@ -177,6 +177,7 @@ const Overview = () => {
       console.log(err.message);
     }
   };
+  const [givenTest, setGivenTest] = useState(false);
 
   useEffect(() => {
     const hasALreadyGivenQuiz = async (id) => {
@@ -184,20 +185,28 @@ const Overview = () => {
         const ref = doc(db, "attempted_quiz", id);
 
         const docSnap = await getDoc(ref);
+
         if (docSnap.exists()) {
-          return true;
+          // console.log(docSnap.data());
+          console.log("You have already attempted this quiz");
+          setGivenTest(true);
         } else {
-          return false;
+          console.log("Couldnt find");
+          setGivenTest(false);
         }
       } catch (error) {
         console.log(error.message);
       }
     };
-    if (hasALreadyGivenQuiz(id)) {
-      alert("You have already given this quiz, please create a new one");
-      navigate("/create");
+
+    hasALreadyGivenQuiz(id);
+
+    if (givenTest) {
+      alert("You have already attempted this quiz");
+      navigate(`/create`);
+      return;
     }
-  }, []);
+  }, [id]);
 
   return (
     <div className="min-h-[85vh] flex  flex-col  ">
