@@ -1,14 +1,4 @@
-/*
- * Install the Generative AI SDK
- *
- * $ npm install @google/generative-ai
- */
 
-// const {
-//   GoogleGenerativeAI,
-//   HarmCategory,
-//   HarmBlockThreshold,
-// } = require("@google/generative-ai");
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const apiKey = import.meta.env.VITE_GEMINI_API;

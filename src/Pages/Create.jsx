@@ -299,6 +299,8 @@ const Create = () => {
     }
   }, []);
 
+  console.log(question);
+
   return (
     <div className="min-h-[85vh] flex items-start justify-center  flex-col  p-8 gap-4 mb-20  ">
       <div className="flex items-center gap-2">
@@ -392,16 +394,30 @@ const Create = () => {
               alt=""
               className="h-4"
             />
-            <p>Enter Number of Questions</p>
+            <p>Choose Number of Questions</p>
           </div>
           <div className="mt-2">
-            <input
+            {/* <input
               type="number"
               className="w-full border border-green-500 rounded outline-green-500 p-2 font-bold "
               onChange={(e) => {
                 setQuestions(e.target.value);
               }}
-            />
+            /> */}
+
+            <select
+              name=""
+              id=""
+              className="w-full border border-green-500 rounded outline-green-500 p-2 font-bold cursor-pointer"
+              onChange={(e) => setQuestions(e.target.value)}
+            >
+              <option value="">Select</option>
+              {[...Array(30)].fill(1, 30).map((item, index) => (
+                <option key={index + 1} value={index + 1}>
+                  {index + 1}
+                </option>
+              ))}
+            </select>
           </div>
           <p className="mt-6 text-red-500">{error}</p>
           <div
